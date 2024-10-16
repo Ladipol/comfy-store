@@ -14,14 +14,18 @@ export const loader = async ({ params }) => {
 
 const SingleProduct = () => {
 	const { product } = useLoaderData();
-	const { image, title, price, description, colors, company, quantity } =
+
+	const { image, title, price, description, colors, company } =
 		product.attributes;
+
 	const dollarsAmount = formatPrice(price);
+
 	const [productColor, setProductColor] = useState(colors[0]);
-	const [productQuantity, setProductQuantity] = useState(1);
+	const [quantity, setQuantity] = useState(1);
+	//const [amount, setAmount] = useState(1);
 
 	const handleProductQuantity = (e) => {
-		setProductQuantity(parseInt(e.target.value));
+		setQuantity(parseInt(e.target.value));
 	};
 
 	const cartProduct = {
@@ -102,8 +106,8 @@ const SingleProduct = () => {
 							id='quantity'
 							className='select select-bordered select-secondary select-md'
 							onChange={handleProductQuantity}
-							value={productQuantity}>
-							{generateQuantityOptions(10)}
+							value={quantity}>
+							{generateQuantityOptions(20)}
 						</select>
 					</div>
 					{/* CART BTN */}
