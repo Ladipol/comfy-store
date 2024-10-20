@@ -6,6 +6,11 @@ const themes = {
 	dracula: "dracula",
 };
 
+const getUserFromLocalStorage = () => {
+	const user = localStorage.getItem("user");
+	return user ? JSON.parse(user) : null;
+};
+
 const getThemeFromLocalStorage = () => {
 	const theme = localStorage.getItem("theme") || themes.dracula;
 	document.documentElement.setAttribute("data-theme", theme);
@@ -13,7 +18,7 @@ const getThemeFromLocalStorage = () => {
 };
 
 const initialState = {
-	user: { username: "ladipo layode" },
+	user: getUserFromLocalStorage(),
 	theme: getThemeFromLocalStorage(),
 };
 
@@ -22,10 +27,15 @@ const userSlice = createSlice({
 	initialState,
 	reducers: {
 		loginUser: (state, action) => {
-			console.log("login");
+			const user = { ...action.payload.user, token: action.payload.jwt };
+			state.user = action.payload;
+			localStorage.setItem("user", JSON.stringify(user));
+			toast.success("Logged in successfully");
 		},
 		logoutUser: (state) => {
-			console.log("logout");
+			state.user = null;
+			localStorage.removeItem("user");
+			toast.success("Logged out successfully");
 		},
 		toggleTheme: (state) => {
 			const { dracula, winter } = themes;
